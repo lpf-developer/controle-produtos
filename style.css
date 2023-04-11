@@ -46,7 +46,7 @@ button{
     outline: 0;
     background-color: ccc;
     color: #fff;
-    min-width: 100px;
+    width: 100px;
     border-radius: 3px;
     font-size: 1em;
     font-weight: bold;
@@ -61,6 +61,7 @@ button:hover{
 }
 .background-yellow{
     background-color: #f7dc6f;
+    margin-right: 10px;
 }
 .background-red{
     background-color: #e74c3c;
@@ -106,7 +107,7 @@ td:nth-child(3) {
     width: 300px;
 }
 td:nth-child(3) {
-    text-align: right;
+    text-align: left;
 }
 th:nth-child(4),
 td:nth-child(4) {

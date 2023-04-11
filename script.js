@@ -6,6 +6,7 @@ class Produto{
         this.msg = ''
     }
 
+    // Funções Auxiliares
     lerDados(){
 
         let produto = {}
@@ -45,20 +46,10 @@ class Produto{
         return true
     }
 
-    salvar(){
-        let produto = this.lerDados()
-        if(this.validaCampos(produto)){
-            alert('salvar')
-        }
-    }
-
-    adicionar(){
+    formataMoeda(valor){
         
+        return "R$ " + valor.replace(',', '.').replace('.', ',');
     }
-
-    excluir(){
-        alert("Produto excluído")
-    }    
 
     showFlashMessage(message, timeout) {
         let flashMessage = document.getElementById('flash-message');
@@ -68,6 +59,83 @@ class Produto{
             flashMessage.style.display = 'none';
         }, timeout);
     }
+
+    cancelar(){
+        document.getElementById('produto').value=''
+        document.getElementById('valor').value=''
+    }
+
+    // CRUD
+    salvar(){
+        let produto = this.lerDados()
+        if(this.validaCampos(produto)){
+            this.adicionar(produto)
+        }
+        this.listaTabela()
+        this.cancelar()
+    }
+
+    adicionar(produto){
+        this.arrayProdutos.push(produto)
+        this.id++
+    }
+
+    listaTabela(){
+        
+        let tbody = document.getElementById("tbody")
+        
+        tbody.innerText = ''
+        
+        for (let i = 0; i < this.arrayProdutos.length; i++) {
+            
+            // Insere linhas e colunas
+            let tr = tbody.insertRow()
+            let td_id = tr.insertCell()
+            let td_produto = tr.insertCell()            
+            let td_valor = tr.insertCell()            
+            let td_acoes = tr.insertCell()
+            
+            // Insere valores
+            td_id.innerText = this.arrayProdutos[i].id
+            td_produto.innerText = this.arrayProdutos[i].nomeProduto
+            td_valor.innerText = this.formataMoeda(this.arrayProdutos[i].valor)
+            //td_acoes.innerText = this.arrayProdutos[i].valor
+
+            /**
+             * Opcionalmente, podemos inserir classes css na célula através de
+             * códigojavascript.
+             * O código abaixo insere a classe center (css), que centraliza as 
+             * strings ao centro do campo através da função classList.add
+             * 
+             * td_id.classList.add('center')
+             */
+
+            // Botões de Ação Editar e Excluir
+
+            // Botão Editar
+            let btnEdit = document.createElement('button')
+            let imgEdit = document.createElement('img')
+            imgEdit.src = "atualizar.png"
+            btnEdit.classList.add('background-yellow')
+            
+            // Botão Excluir
+            let btnExcluir = document.createElement('button')
+            let imgExcluir = document.createElement('img')
+            imgExcluir.src = "excluir.png"
+            btnExcluir.classList.add('background-red')
+
+            // Inserindo os botões nas células
+            btnEdit.appendChild(imgEdit) // Insere a imagem no botão
+            td_acoes.appendChild(btnEdit) // Insere o botão na célula
+
+            btnExcluir.appendChild(imgExcluir)
+            td_acoes.appendChild(btnExcluir)
+        }
+    }
+
+    excluir(){
+        alert("Produto excluído")
+    }      
 }
 
 let produto = new Produto
