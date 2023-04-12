@@ -67,10 +67,13 @@ class Produto{
 
     // CRUD
     salvar(){
+        
         let produto = this.lerDados()
+        
         if(this.validaCampos(produto)){
             this.adicionar(produto)
         }
+        
         this.listaTabela()
         this.cancelar()
     }
@@ -117,13 +120,15 @@ class Produto{
             let imgEdit = document.createElement('img')
             imgEdit.src = "atualizar.png"
             btnEdit.classList.add('background-yellow')
-            
+            btnEdit.setAttribute("onclick","produto.editar()")
+           
             // Botão Excluir
             let btnExcluir = document.createElement('button')
             let imgExcluir = document.createElement('img')
             imgExcluir.src = "excluir.png"
             btnExcluir.classList.add('background-red')
-
+            btnExcluir.setAttribute("onclick", "produto.excluir(" + this.arrayProdutos[i].id +")")
+            
             // Inserindo os botões nas células
             btnEdit.appendChild(imgEdit) // Insere a imagem no botão
             td_acoes.appendChild(btnEdit) // Insere o botão na célula
@@ -133,8 +138,20 @@ class Produto{
         }
     }
 
-    excluir(){
-        alert("Produto excluído")
+    editar(){
+        alert ("Editando o produto...")
+    }
+
+    excluir(id){
+        
+        let tbody = document.getElementById("tbody")
+
+        for (let i = 0; i < this.arrayProdutos.length; i++) {
+            if(this.arrayProdutos[i].id == id){
+                this.arrayProdutos.splice(i,1)
+                tbody.deleteRow(i)
+            }
+        }
     }      
 }
 
