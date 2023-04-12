@@ -143,13 +143,14 @@ class Produto{
     }
 
     excluir(id){
-        
-        let tbody = document.getElementById("tbody")
+        if(confirm("Deseja realmente excluir o produto de ID " + id)){
+            let tbody = document.getElementById("tbody")
 
-        for (let i = 0; i < this.arrayProdutos.length; i++) {
-            if(this.arrayProdutos[i].id == id){
-                this.arrayProdutos.splice(i,1)
-                tbody.deleteRow(i)
+            for (let i = 0; i < this.arrayProdutos.length; i++) {
+                if (this.arrayProdutos[i].id == id) {
+                    this.arrayProdutos.splice(i, 1)
+                    tbody.deleteRow(i)
+                }
             }
         }
     }      
