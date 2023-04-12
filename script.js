@@ -4,6 +4,7 @@ class Produto{
         this.id = 1
         this.arrayProdutos = []
         this.msg = ''
+        this.editId = null
     }
 
     // Funções Auxiliares
@@ -63,6 +64,8 @@ class Produto{
     cancelar(){
         document.getElementById('produto').value=''
         document.getElementById('valor').value=''
+        document.getElementById('btnSalvar').innerText = 'Salvar'
+        this.editId = null
     }
 
     // CRUD
@@ -71,7 +74,11 @@ class Produto{
         let produto = this.lerDados()
         
         if(this.validaCampos(produto)){
-            this.adicionar(produto)
+            if(this.editId == null){
+                this.adicionar(produto)
+            }else{
+                this.atualizar(this.editId, produto)
+            }
         }
         
         this.listaTabela()
@@ -79,6 +86,7 @@ class Produto{
     }
 
     adicionar(produto){
+        produto.valor = parseFloat(produto.valor)
         this.arrayProdutos.push(produto)
         this.id++
     }
@@ -120,14 +128,18 @@ class Produto{
             let imgEdit = document.createElement('img')
             imgEdit.src = "atualizar.png"
             btnEdit.classList.add('background-yellow')
-            btnEdit.setAttribute("onclick","produto.editar()")
-           
+            btnEdit.setAttribute("onclick", "produto.preparaEdicao(" + 
+                JSON.stringify(this.arrayProdutos[i]) + 
+            ")")
+
             // Botão Excluir
             let btnExcluir = document.createElement('button')
             let imgExcluir = document.createElement('img')
             imgExcluir.src = "excluir.png"
             btnExcluir.classList.add('background-red')
-            btnExcluir.setAttribute("onclick", "produto.excluir(" + this.arrayProdutos[i].id +")")
+            btnExcluir.setAttribute("onclick", "produto.excluir(" + 
+                this.arrayProdutos[i].id +
+            ")")
             
             // Inserindo os botões nas células
             btnEdit.appendChild(imgEdit) // Insere a imagem no botão
@@ -138,8 +150,20 @@ class Produto{
         }
     }
 
-    editar(){
-        alert ("Editando o produto...")
+    preparaEdicao(dados){
+        this.editId = dados.id
+        document.getElementById("produto").value = dados.nomeProduto
+        document.getElementById("valor").value = dados.valor
+        document.getElementById("btnSalvar").innerText = "Atualizar"
+    }
+
+    atualizar(id, produto){
+        for (let i = 0; i < this.arrayProdutos.length; i++) {
+            if(this.arrayProdutos[i].id == id){
+                this.arrayProdutos[i].nomeProduto = produto.nomeProduto 
+                this.arrayProdutos[i].valor = produto.valor 
+            } 
+        }
     }
 
     excluir(id){
